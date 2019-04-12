@@ -1,0 +1,15 @@
+[submodule "DeepRecommender"]
+	path = DeepRecommender
+	url = git@github.com:NVIDIA/DeepRecommender.git
+[submodule "neural_collaborative_filtering"]
+	path = neural_collaborative_filtering
+	url = git@github.com:hexiangnan/neural_collaborative_filtering.git
+[submodule "GRU4Rec"]
+	path = GRU4Rec
+	url = git@github.com:hidasib/GRU4Rec.git
+[submodule "vae_cf"]
+	path = vae_cf
+	url = git@github.com:dawenl/vae_cf.git
+[submodule "CollaborativeVAE"]
+	path = CollaborativeVAE
+	url = git@github.com:eelxpeng/CollaborativeVAE.git
