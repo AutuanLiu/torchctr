@@ -1,4 +1,6 @@
 import time
+import pandas as pd
+from pathlib import Path
 
 
 # 定义装饰器，监控运行时间
@@ -11,3 +13,24 @@ def timmer(func):
         return res
 
     return wrapper
+
+
+def get_dat_data(fp):
+    """读取 .dat 数据
+
+    Args:
+        fp (str or Path): 文件路径名
+    """
+
+    if not isinstance(fp, Path):
+        fp = Path(fp)
+    data = pd.read_csv(fp, sep='::', header=None, engine='python')
+    return data
+
+
+class DataTransformer:
+    def __init__():
+        pass
+
+    def trans2structured(data):
+        pass
