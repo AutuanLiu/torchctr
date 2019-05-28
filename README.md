@@ -36,7 +36,17 @@ Recommended system(2018-2019)
 
    `.dat 数据 -> 结构型数据 -> train test split -> dataloader -> model`
 
+## CTR 模型
 
+(**WIP**)
+
+1. FM
+2. FFM
+3. DeepFM
+4. xDeepFM
+5. AFM
+6. NFM
 
 ## 参考文献
+
 1. 《推荐系统实践》
