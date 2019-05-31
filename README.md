@@ -50,3 +50,8 @@ Recommended system(2018-2019)
 ## 参考文献
 
 1. 《推荐系统实践》
+2. git@github.com:dawenl/vae_cf.git
+3. git@github.com:eelxpeng/CollaborativeVAE.git
+4. git@github.com:hidasib/GRU4Rec.git
+5. git@github.com:hexiangnan/neural_collaborative_filtering.git
+6. git@github.com:NVIDIA/DeepRecommender.git
