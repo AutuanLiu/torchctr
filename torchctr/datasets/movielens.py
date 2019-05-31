@@ -16,7 +16,7 @@ def get_movielens(root, version='ml_20m'):
         'ml-20m': 'http://files.grouplens.org/datasets/movielens/ml-20m.zip'
     }
 
-    assert version in urls.keys(), f'version must be one of {set(urls.keys())}'
+    assert version in urls.keys(), f"version must be one of {set(urls.keys())}"
     raw_folder = os.path.join(root, version, 'raw')
     processed_folder = os.path.join(root, version, 'processed')
     makedir_exist_ok(raw_folder)

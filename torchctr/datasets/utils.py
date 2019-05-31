@@ -2,7 +2,13 @@ import gzip
 import os
 import tarfile
 import zipfile
+from pathlib import Path
+
+import pandas as pd
+import torch
 from torch.utils.data import random_split
+
+device = torch.device('cuda: 0' if torch.cuda.is_available() else 'cpu')
 
 
 def extract_file(from_path, to_path, remove_finished=False):
@@ -27,9 +33,22 @@ def extract_file(from_path, to_path, remove_finished=False):
     if remove_finished:
         os.unlink(from_path)
 
+
 def train_test_split(dataset, test_rate):
     """Split dataset into two subdataset(train/test)."""
 
     test_size = round(len(dataset) * test_rate)
     train_size = len(dataset) - test_size
     return random_split(dataset, [train_size, test_size])
+
+
+def read_data(filename, **kwargs):
+    """read data from files.
+
+    Args:
+        filename (str or Path): file name.
+    """
+
+    if not isinstance(filename, Path):
+        filename = Path(filename)
+    return pd.read_csv(filename, **kwargs)
