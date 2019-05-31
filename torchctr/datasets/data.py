@@ -1,6 +1,4 @@
 import os
-import tarfile
-import zipfile
 
 import torch
 import torch.utils.data as data
@@ -31,17 +29,3 @@ class RecommendDataset(data.Dataset):
 
     def extra_repr(self):
         return ""
-
-
-def extract_zip(from_path, to_path, remove_finished=False):
-    if from_path.endswith(".zip"):
-        with zipfile.ZipFile(from_path, 'r') as z:
-            z.extractall(to_path)
-    elif from_path.endswith(".tar.gz"):
-        with tarfile.open(from_path, 'r:gz') as tar:
-            tar.extractall(path=to_path)
-    else:
-        raise ValueError("Extraction of {} not supported".format(from_path))
-
-    if remove_finished:
-        os.unlink(from_path)

@@ -2,7 +2,7 @@ import os
 
 from torchvision.datasets.utils import download_url, makedir_exist_ok
 
-from .data import extract_zip
+from .utils import extract_file
 
 
 def get_criteo(root):
@@ -20,5 +20,5 @@ def get_criteo(root):
     print('Downloading...')
     download_url(url, root=raw_folder, filename=filename, md5=None)
     print('Extracting...')
-    extract_zip(os.path.join(raw_folder, filename), processed_folder)
+    extract_file(os.path.join(raw_folder, filename), processed_folder)
     print('Done!')

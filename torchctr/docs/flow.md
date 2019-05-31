@@ -1,0 +1,1 @@
+download_data --> read_data --> process_data --> Dataset --> split_dataset --> DataLoader --> model --> prediction

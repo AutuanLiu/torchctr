@@ -2,7 +2,7 @@ import os
 
 from torchvision.datasets.utils import download_url, makedir_exist_ok
 
-from .data import extract_zip
+from .utils import extract_file
 
 
 def get_movielens(root, version='ml_20m'):
@@ -13,10 +13,10 @@ def get_movielens(root, version='ml_20m'):
         'ml-100k': 'http://files.grouplens.org/datasets/movielens/ml-100k.zip',
         'ml-1m': 'http://files.grouplens.org/datasets/movielens/ml-1m.zip',
         'ml-10m': 'http://files.grouplens.org/datasets/movielens/ml-10m.zip',
-        'ml_20m': 'http://files.grouplens.org/datasets/movielens/ml-20m.zip'
+        'ml-20m': 'http://files.grouplens.org/datasets/movielens/ml-20m.zip'
     }
 
-    assert version in urls.keys(), 'version is not supported!'
+    assert version in urls.keys(), f'version must be one of {set(urls.keys())}'
     raw_folder = os.path.join(root, version, 'raw')
     processed_folder = os.path.join(root, version, 'processed')
     makedir_exist_ok(raw_folder)
@@ -27,5 +27,5 @@ def get_movielens(root, version='ml_20m'):
     print('Downloading...')
     download_url(urls[version], root=raw_folder, filename=filename, md5=None)
     print('Extracting...')
-    extract_zip(os.path.join(raw_folder, filename), processed_folder)
+    extract_file(os.path.join(raw_folder, filename), processed_folder)
     print('Done!')
