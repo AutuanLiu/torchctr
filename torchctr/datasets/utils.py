@@ -4,6 +4,7 @@ import tarfile
 import zipfile
 from collections import namedtuple
 from pathlib import Path
+from types import SimpleNamespace
 
 import pandas as pd
 import torch
@@ -12,8 +13,14 @@ from torch.utils.data import random_split
 device = torch.device('cuda: 0' if torch.cuda.is_available() else 'cpu')
 
 # data meta and init
-DataMeta = namedtuple('DataMeta', ['data', 'shape', 'features', 'bag_offsets'])
+DataMeta = namedtuple('DataMeta', ['data', 'shape', 'features', 'nunique', 'bag_offsets'])
+DataInput = namedtuple('DataInput', ['sparse_data', 'dense_data', 'sequence_data'])
 DataMeta.__new__.__defaults__ = (None, ) * len(DataMeta._fields)
+DataInput.__new__.__defaults__ = (None, ) * len(DataInput._fields)
+
+# simple name space
+_default_cpus = min(16, num_cpus())
+defaults = SimpleNamespace(cpus=_default_cpus, device=device)
 
 
 def extract_file(from_path, to_path, remove_finished=False):
@@ -57,3 +64,12 @@ def read_data(filename, **kwargs):
     if not isinstance(filename, Path):
         filename = Path(filename)
     return pd.read_csv(filename, **kwargs)
+
+
+def num_cpus() -> int:
+    "Get number of cpus"
+
+    try:
+        return len(os.sched_getaffinity(0))
+    except AttributeError:
+        return os.cpu_count()

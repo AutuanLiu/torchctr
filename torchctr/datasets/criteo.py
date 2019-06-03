@@ -22,3 +22,4 @@ def get_criteo(root):
     print('Extracting...')
     extract_file(os.path.join(raw_folder, filename), processed_folder)
     print('Done!')
+    return os.path.join(processed_folder)

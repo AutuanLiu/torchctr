@@ -5,5 +5,5 @@ root = get_movielens('datasets', 'ml-1m')
 
 # step 2: read data
 # users = read_data()
-# movies =
-# ratings =
+# movies = 
+# ratings = 
