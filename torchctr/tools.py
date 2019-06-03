@@ -11,11 +11,3 @@ def timmer(func):
         return res
 
     return wrapper
-
-
-def num_cpus() -> int:
-    "Get number of cpus"
-    try:
-        return len(os.sched_getaffinity(0))
-    except AttributeError:
-        return os.cpu_count()

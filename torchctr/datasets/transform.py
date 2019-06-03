@@ -5,12 +5,14 @@ import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.preprocessing import LabelEncoder, MinMaxScaler, StandardScaler
 
-from .utils import DataMeta, defaults
+from .utils import DataMeta, defaults, DataInput, FeatureDict
 
 
 def sparse_feature_encoding(data: pd.DataFrame, features_names: Union[str, List[str]]):
     """Encoding for sparse features."""
 
+    if not features_names:
+        return None
     nuniques = []
     for feat in features_names:
         lbe = LabelEncoder()
@@ -23,6 +25,8 @@ def sparse_feature_encoding(data: pd.DataFrame, features_names: Union[str, List[
 def sequence_feature_encoding(data: pd.DataFrame, features_names: Union[str, List[str]], sep: str = ','):
     """Encoding for sequence features."""
 
+    if not features_names:
+        return None
     data_value = bags_offsets = nuniques = []
     for feature in features_names:
         vocab = set.union(*[set(str(x).strip().split(sep=sep)) for x in data[feature]])
@@ -45,6 +49,8 @@ def sequence_feature_encoding(data: pd.DataFrame, features_names: Union[str, Lis
 def dense_feature_scale(data: pd.DataFrame, features_names: Union[str, List[str]], scaler_instance=None):
     """Scaling for sparse features."""
 
+    if not features_names:
+        return None, None
     scaler = scaler_instance if scaler_instance else StandardScaler()
     scaler = scaler.fit(data[features_names])
     data[features_names] = scaler.transform(data[features_names])
@@ -57,3 +63,19 @@ def fillna(data: pd.DataFrame, features_names: Union[str, List[str]], fill_v, **
 
     data[features_names] = data[features_names].fillna(fill_v, **kwargs)
     return data
+
+
+def make_datasets(data: pd.DataFrame, features_dict=None, sep=',', scaler=None):
+    """make dataset for df.
+    
+    Args:
+        data (pd.DataFrame): data
+        features_dict (FeatureDict): instance of FeatureDict. Defaults to None.
+        sep (str, optional): sep for sequence. Defaults to ','.
+        scaler: sacler for dense data.
+    """
+
+    sparse = sparse_feature_encoding(data, features_dict.sparse_features)
+    dense, s = dense_feature_scale(data, features_dict.dense_features, scaler_instance=scaler)
+    sequence = sequence_feature_encoding(data, features_dict.sequence_features)
+    return DataInput(sparse, dense, sequence), s

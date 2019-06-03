@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from torchvision.datasets.utils import download_url, makedir_exist_ok
 
@@ -22,4 +23,4 @@ def get_criteo(root):
     print('Extracting...')
     extract_file(os.path.join(raw_folder, filename), processed_folder)
     print('Done!')
-    return os.path.join(processed_folder)
+    return Path(processed_folder)

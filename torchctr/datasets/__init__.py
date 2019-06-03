@@ -1,6 +1,11 @@
 from .criteo import get_criteo
 from .data import RecommendDataset
 from .movielens import get_movielens
-from .utils import (DataInput, DataMeta, defaults, extract_file, train_test_split, read_data)
+from .transform import (dense_feature_scale, make_datasets, sequence_feature_encoding, sparse_feature_encoding)
+from .utils import (DataInput, DataMeta, FeatureDict, defaults, extract_file, read_data, train_test_split)
 
-__all__ = ['RecommendDataset', 'extract_file', 'get_movielens', 'get_criteo', 'train_test_split', 'DataMeta', 'DataInput', 'defaults', 'read_data']
+__all__ = [
+    'RecommendDataset', 'extract_file', 'get_movielens', 'get_criteo', 'train_test_split', 'DataMeta', 'DataInput',
+    'FeatureDict', 'defaults', 'read_data', 'sequence_feature_encoding', 'dense_feature_scale',
+    'sparse_feature_encoding', 'make_datasets'
+]
