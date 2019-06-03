@@ -2,6 +2,7 @@ import gzip
 import os
 import tarfile
 import zipfile
+from collections import namedtuple
 from pathlib import Path
 
 import pandas as pd
@@ -9,6 +10,10 @@ import torch
 from torch.utils.data import random_split
 
 device = torch.device('cuda: 0' if torch.cuda.is_available() else 'cpu')
+
+# data meta and init
+DataMeta = namedtuple('DataMeta', ['data', 'shape', 'features', 'bag_offsets'])
+DataMeta.__new__.__defaults__ = (None, ) * len(DataMeta._fields)
 
 
 def extract_file(from_path, to_path, remove_finished=False):
