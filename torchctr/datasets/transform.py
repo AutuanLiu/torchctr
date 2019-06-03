@@ -27,12 +27,12 @@ def sequence_feature_encoding(data: pd.DataFrame, features_names: Union[str, Lis
 
     if not features_names:
         return None
-    data_value = bags_offsets = nuniques = []
+    data_value, bags_offsets, nuniques = [], [], []
     for feature in features_names:
         vocab = set.union(*[set(str(x).strip().split(sep=sep)) for x in data[feature]])
         vec = CountVectorizer(vocabulary=vocab)
+        multi_hot = vec.transform(data[feature])
         nuniques.append(len(vocab))
-        # multi_hot = vec.transform(data[feature])
         # to index
         ret, offsets, offset = [], [], 0
         for row in data[feature]:
@@ -77,5 +77,6 @@ def make_datasets(data: pd.DataFrame, features_dict=None, sep=',', scaler=None):
 
     sparse = sparse_feature_encoding(data, features_dict.sparse_features)
     dense, s = dense_feature_scale(data, features_dict.dense_features, scaler_instance=scaler)
-    sequence = sequence_feature_encoding(data, features_dict.sequence_features)
+    sequence = sequence_feature_encoding(data, features_dict.sequence_features, sep=sep)
+    print('Making dataset Done!')
     return DataInput(sparse, dense, sequence), s
