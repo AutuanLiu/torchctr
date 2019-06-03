@@ -5,7 +5,8 @@ import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.preprocessing import LabelEncoder, MinMaxScaler, StandardScaler
 
-from .utils import DataMeta, defaults, DataInput, FeatureDict
+from .data import RecommendDataset
+from .utils import DataInput, DataMeta, FeatureDict, defaults
 
 
 def sparse_feature_encoding(data: pd.DataFrame, features_names: Union[str, List[str]]):
@@ -80,3 +81,13 @@ def make_datasets(data: pd.DataFrame, features_dict=None, sep=',', scaler=None):
     sequence = sequence_feature_encoding(data, features_dict.sequence_features, sep=sep)
     print('Making dataset Done!')
     return DataInput(sparse, dense, sequence), s
+
+
+def make_dataloader(input: DataInput, targets=None, batch_size=64, shuffle=False, drop_last=False):
+    dataset = RecommendDataset(input, targets)
+    lens = len(dataset)
+    size = lens // batch_size if drop_last else lens // batch_size + 1
+    start, dl = 0, []
+    for _ in range(size):
+        yield dataset[start:(start + batch_size)]
+        start += batch_size

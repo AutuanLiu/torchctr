@@ -19,6 +19,21 @@ DataInput.__new__.__defaults__ = (None, ) * len(DataInput._fields)
 FeatureDict.__new__.__defaults__ = (None, ) * len(FeatureDict._fields)
 
 
+def num_cpus() -> int:
+    "Get number of cpus"
+
+    try:
+        return len(os.sched_getaffinity(0))
+    except AttributeError:
+        return os.cpu_count()
+
+
+# simple name space
+device = torch.device('cuda: 0' if torch.cuda.is_available() else 'cpu')
+_default_cpus = min(16, num_cpus())
+defaults = SimpleNamespace(cpus=_default_cpus, device=device)
+
+
 def extract_file(from_path, to_path, remove_finished=False):
     """https://github.com/pytorch/vision/blob/master/torchvision/datasets/utils.py"""
 
@@ -62,16 +77,9 @@ def read_data(filename, **kwargs):
     return pd.read_csv(filename, engine='python', **kwargs)
 
 
-def num_cpus() -> int:
-    "Get number of cpus"
-
-    try:
-        return len(os.sched_getaffinity(0))
-    except AttributeError:
-        return os.cpu_count()
+def emb_sz_rule(dim: int) -> int:
+    return min(600, round(1.6 * dim**0.56))
 
 
-# simple name space
-device = torch.device('cuda: 0' if torch.cuda.is_available() else 'cpu')
-_default_cpus = min(16, num_cpus())
-defaults = SimpleNamespace(cpus=_default_cpus, device=device)
+def totensor(x):
+    return x if isinstance(x, torch.Tensor) else torch.as_tensor(x, device=defaults.device)

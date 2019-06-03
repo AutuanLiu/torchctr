@@ -2,17 +2,19 @@ from dataclasses import dataclass
 
 import torch
 from torch import nn, optim
+from .datasets.utils import defaults, totensor
 
 
 @dataclass
 class Learner:
-    model: nn.Module
+    model: nn.Module = model.to(defaults.device)
     criterion: nn.Module
     opt: optim.Optimizer
 
-    def fit(input, epoch=100):
+    def fit(input_loader, epoch=100):
         pass
     
+    @torch.no_grad()
     def predict(input):
         pass
     
