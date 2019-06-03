@@ -1,0 +1,7 @@
+include requirements.txt
+include description.md
+include torchctr/*
+exclude examples/*
+exclude docs/*
+exclude datasets/*
+exclude nbs/*
