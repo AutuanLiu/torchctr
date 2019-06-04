@@ -1,6 +1,7 @@
 import os
 
 import torch, gc
+import numpy as np
 
 from .utils import DataInput, DataMeta
 
@@ -10,22 +11,25 @@ class RecommendDataset:
 
     def __init__(self, input, target):
         self.data = input
-        self.sparse = self.data.sparse_data if self.data.sparse_data else None
-        self.sequence = self.data.sequence_data if self.data.sequence_data else None
-        self.dense = self.data.dense_data if self.data.dense_data else None
+        self.sparse = input.sparse_data if input.sparse_data else None
+        self.sequence = input.sequence_data if input.sequence_data else None
+        self.dense = input.dense_data if input.dense_data else None
         self.target = target
         self.lens = len(self.target)
         if self.sequence:
-            data, offsets = [], [[0] * len(self.sequence.bag_offsets)]
+            data, offsets = [], np.zeros((self.lens, len(self.sequence.bag_offsets)), dtype=int)
             for i in range(self.lens):
+                tmp = []
                 for x, y in zip(self.sequence.data, self.sequence.bag_offsets):
-                    tmp = []
                     if i == self.lens - 1:
-                        tmp.append(x[y[i:][0]])
+                        t = x[y[-1]:]
+                        t = [t] if isinstance(t, int) else t
+                        tmp.append(t)
                     else:
-                        tmp.append(x[y[i:(i + 1)][0]])
+                        t = x[y[i]:y[i + 1]]
+                        t = [t] if isinstance(t, int) else t
+                        tmp.append(t)
                 data.append(tmp)
-            self.sequence_data = data
             self.offsets = offsets
         gc.collect()
 
@@ -36,8 +40,9 @@ class RecommendDataset:
         if self.dense:
             dense = DataMeta(self.dense.data[index], None, self.dense.features, self.dense.nunique, None)
         if self.sequence:
-            sequence = DataMeta(self.sequence_data[index], None, self.sequence.features, self.sequence.nunique,
-                                self.offsets)
+            tmp = self.sequence_data[index]
+            sequence = DataMeta(data, None, self.sequence.features, self.sequence.nunique,
+                                self.offsets[index])
         data = sparse, dense, sequence
         gc.collect()
         return DataInput(*data), self.target[index]

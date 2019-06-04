@@ -15,7 +15,7 @@ dataset = pd.merge(ratings, users, on='UserID')
 dataset = pd.merge(dataset, movies, on='MovieID')
 
 # subsample
-dataset = dataset.iloc[:10000, :]
+dataset = dataset.iloc[5000:10000, :]
 
 # step 4: make features and dataloader
 sparse_features = ['UserID', 'Gender', 'Age', 'Occupation', 'Zip-code', 'MovieID']
@@ -30,3 +30,7 @@ model = EmbeddingLayer(input).to(defaults.device)
 print(model)
 out = model(input)
 print(out.shape, out, sep='\n')
+# print(input)
+
+# for data, target in loader:
+#     print(data, target)

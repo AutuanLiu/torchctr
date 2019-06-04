@@ -87,7 +87,9 @@ def make_dataloader(input: DataInput, targets=None, batch_size=64, shuffle=False
     dataset = RecommendDataset(input, targets)
     lens = len(dataset)
     size = lens // batch_size if drop_last else lens // batch_size + 1
+    shuffled_index = np.random.shuffle(range(lens)) if shuffle else list(range(lens))
     start, dl = 0, []
     for _ in range(size):
-        yield dataset[start:(start + batch_size)]
+        idx = shuffled_index[start:(start + batch_size)]
+        yield dataset[idx]
         start += batch_size
