@@ -19,7 +19,7 @@ def sparse_feature_encoding(data: pd.DataFrame, features_names: Union[str, List[
         lbe = LabelEncoder()
         data[feat] = lbe.fit_transform(data[feat])
         nuniques.append(len(lbe.classes_))
-    data_meta = DataMeta(data[features_names].values, data[features_names].shape, features_names, nuniques)
+    data_meta = DataMeta(data[features_names].values, features_names, nuniques)
     return data_meta
 
 
@@ -30,11 +30,14 @@ def sequence_feature_encoding(data: pd.DataFrame, features_names: Union[str, Lis
         return None
     data_value, nuniques = [], []
     for feature in features_names:
-        vocab = set.union(*[set(str(x).strip().split(sep=sep)) for x in data[feature]])
-        vec = CountVectorizer(vocabulary=vocab)
-        multi_hot = vec.transform(data[feature])
+        corpus = [' '.join(str(x).strip().split(sep=sep)) for x in data[feature]]
+        # vocab = set.union(*[set(x.split(' ')) for x in corpus])
+        # vec = CountVectorizer(vocabulary=vocab)
+        # multi_hot = vec.transform(data[feature])
+        vec = CountVectorizer(token_pattern=r'(?u)\b[\w\']+\b')
+        multi_hot = vec.fit_transform(corpus)
         data_value.append(multi_hot.toarray())
-        nuniques.append(len(vocab))
+        nuniques.append(len(vec.vocabulary_))
         # to index
         # ret, offsets, offset = [], [], 0
         # for row in data[feature]:
@@ -43,7 +46,7 @@ def sequence_feature_encoding(data: pd.DataFrame, features_names: Union[str, Lis
         #     ret.extend(map(lambda word: vec.vocabulary_[word], row))
         #     offset += len(row)
         # data_value.append(ret)
-    data_meta = DataMeta(np.hstack(data_value), None, features_names, nuniques)
+    data_meta = DataMeta(np.hstack(data_value), features_names, nuniques)
     return data_meta
 
 
@@ -55,7 +58,7 @@ def dense_feature_scale(data: pd.DataFrame, features_names: Union[str, List[str]
     scaler = scaler_instance if scaler_instance else StandardScaler()
     scaler = scaler.fit(data[features_names])
     data[features_names] = scaler.transform(data[features_names])
-    data_meta = DataMeta(data[features_names].values, data[features_names].shape, features_names)
+    data_meta = DataMeta(data[features_names].values, features_names)
     return data_meta, scaler
 
 
