@@ -13,7 +13,7 @@ Recommended system(2018-2019)
     - [ml-10m](http://files.grouplens.org/datasets/movielens/ml-10m.zip)
     - [ml-20m](http://files.grouplens.org/datasets/movielens/ml-20m.zi)
 2. Criteo data
-
+    - [dac](https://s3-eu-west-1.amazonaws.com/kaggle-display-advertising-challenge-dataset/dac.tar.gz)
 
 ## Embedding
 
