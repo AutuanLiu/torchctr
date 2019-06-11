@@ -27,81 +27,28 @@ Recommended system(2018-2019)
 
 (**WIP**)
 
-1. FM
+|     model      |           structure            |
+| :------------: | :----------------------------: |
+|       FM       |      ![FM](./imgs/FM.png)      |
+|      FFM       |     ![FFM](./imgs/FFM.png)     |
+| DeepFM-201703  |  ![DeepFM](./imgs/DeepFM.png)  |
+|  xDeepFM-2018  | ![xDeepFM](./imgs/xDeepFM.png) |
+|   AFM-201708   |     ![AFM](./imgs/AFM.png)     |
+|   NFM-201708   |     ![NFM](./imgs/NFM.png)     |
+|  FGCNN-201904  |   ![FGCNN](./imgs/FGCNN.png)   |
+|      MLR       |     ![MLR](./imgs/MLR.png)     |
+|      NFFM      |    ![NFFM](./imgs/NFFM.png)    |
+|      WDL       |     ![WDL](./imgs/WDL.png)     |
+|   PNN-201611   |     ![PNN](./imgs/PNN.png)     |
+|      CIN       |     ![CIN](./imgs/CIN.png)     |
+|  CCPM-201510   |    ![CCPM](./imgs/CCPM.png)    |
+| AutoInt-201810 | ![AutoInt](./imgs/AutoInt.png) |
+|   DCN-201708   |     ![DCN](./imgs/DCN.png)     |
+|      DSIN      |    ![DSIN](./imgs/DSIN.png)    |
+|   FNN-201601   |     ![FNN](./imgs/FNN.png)     |
+|      DIEN      |    ![DIEN](./imgs/DIEN.png)    |
+|   DIN-201706   |     ![DIN](./imgs/DIN.png)     |
 
-    ![FM](./imgs/FM.png)
-
-2. FFM
-
-    ![FFM](./imgs/FFM.png)
-
-3. DeepFM-201703
-
-    ![DeepFM](./imgs/DeepFM.png)
-
-4. xDeepFM-2018
-
-    ![xDeepFM](./imgs/xDeepFM.png)
-
-5. AFM-201708
-
-    ![AFM](./imgs/AFM.png)
-
-6. NFM-201708
-
-    ![NFM](./imgs/NFM.png)
-
-7. FGCNN-201904
-
-    ![FGCNN](./imgs/FGCNN.png)
-
-8. MLR
-
-    ![MLR](./imgs/MLR.png)
-
-9. NFFM
-
-    ![NFFM](./imgs/NFFM.png)
-
-10. WDL
-
-    ![WDL](./imgs/WDL.png)
-
-11. PNN-201611
-
-    ![PNN](./imgs/PNN.png)
-
-12. CIN
-
-    ![CIN](./imgs/CIN.png)
-
-13. CCPM-201510
-
-    ![CCPM](./imgs/CCPM.png)
-
-14. AutoInt-201810
-
-    ![AutoInt](./imgs/AutoInt.png)
-
-15. DCN-201708
-
-    ![DCN](./imgs/DCN.png)
-
-16. DSIN
-
-    ![DSIN](./imgs/DSIN.png)
-
-17. FNN-201601
-
-    ![FNN](./imgs/FNN.png)
-
-18. DIEN
-
-    ![DIEN](./imgs/DIEN.png)
-
-19. DIN-201706
-
-    ![DIN](./imgs/DIN.png)
 
 ## Refrences
 
