@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.preprocessing import LabelEncoder, MinMaxScaler, StandardScaler
+from torch.utils.data import DataLoader
 
 from .data import RecommendDataset
 from .utils import DataInput, DataMeta, FeatureDict, defaults
@@ -86,13 +87,6 @@ def make_datasets(data: pd.DataFrame, features_dict=None, sep=',', scaler=None):
     return DataInput(sparse, dense, sequence), s
 
 
-def make_dataloader(input: DataInput, targets=None, batch_size=64, shuffle=False, drop_last=False):
+def make_dataloader(input: DataInput, targets=None, batch_size=64, **kwargs):
     dataset = RecommendDataset(input, targets)
-    lens = len(dataset)
-    size = lens // batch_size if drop_last else lens // batch_size + 1
-    shuffled_index = np.random.shuffle(range(lens)) if shuffle else list(range(lens))
-    start, dl = 0, []
-    for _ in range(size):
-        idx = shuffled_index[start:(start + batch_size)]
-        yield dataset[idx]
-        start += batch_size
+    return DataLoader(dataset, batch_size=batch_size, **kwargs)

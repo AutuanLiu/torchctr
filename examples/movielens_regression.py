@@ -1,7 +1,8 @@
 import pandas as pd
 import torch
 from torchctr.layers import EmbeddingLayer
-from torchctr.datasets import (FeatureDict, get_movielens, make_datasets, read_data, defaults, fillna, make_dataloader)
+from torchctr.datasets import (FeatureDict, get_movielens, make_datasets, read_data, defaults, fillna, make_dataloader,
+                               RecommendDataset)
 
 # step 1: download dataset
 root = get_movielens('datasets', 'ml-1m')
@@ -24,7 +25,9 @@ sequence_features = ['Genres']
 dataset = fillna(dataset, dataset.columns, fill_v='unk')
 features = FeatureDict(sparse_features, None, sequence_features)
 input, _ = make_datasets(dataset, features, sep='|')
-# loader = make_dataloader(input, dataset['Rating'].values, batch_size=64, shuffle=True)
+loader = make_dataloader(input, dataset['Rating'].values, batch_size=64, shuffle=True)
+dataset = RecommendDataset(input, dataset['Rating'].values)
+print(dataset)
 
 # step 5: build model
 model = EmbeddingLayer(input).to(defaults.device)
@@ -32,5 +35,5 @@ print(model)
 out = model(input)
 print(out.shape, out, sep='\n')
 
-# for data, target in loader:
-#     print(data, target)
+for data, target in loader:
+    print(data, target)
