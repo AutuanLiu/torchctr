@@ -28,22 +28,22 @@ def sequence_feature_encoding(data: pd.DataFrame, features_names: Union[str, Lis
 
     if not features_names:
         return None
-    data_value, bags_offsets, nuniques = [], [], []
+    data_value, nuniques = [], []
     for feature in features_names:
         vocab = set.union(*[set(str(x).strip().split(sep=sep)) for x in data[feature]])
         vec = CountVectorizer(vocabulary=vocab)
         multi_hot = vec.transform(data[feature])
+        data_value.append(multi_hot.toarray())
         nuniques.append(len(vocab))
         # to index
-        ret, offsets, offset = [], [], 0
-        for row in data[feature]:
-            offsets.append(offset)
-            row = row.split(sep) if isinstance(row, str) else str(row).split(sep)
-            ret.extend(map(lambda word: vec.vocabulary_[word], row))
-            offset += len(row)
-        data_value.append(ret)
-        bags_offsets.append(offsets)
-    data_meta = DataMeta(data_value, None, features_names, nuniques, bags_offsets)
+        # ret, offsets, offset = [], [], 0
+        # for row in data[feature]:
+        #     offsets.append(offset)
+        #     row = row.split(sep) if isinstance(row, str) else str(row).split(sep)
+        #     ret.extend(map(lambda word: vec.vocabulary_[word], row))
+        #     offset += len(row)
+        # data_value.append(ret)
+    data_meta = DataMeta(np.hstack(data_value), None, features_names, nuniques)
     return data_meta
 
 

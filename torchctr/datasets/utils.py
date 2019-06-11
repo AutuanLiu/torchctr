@@ -11,7 +11,7 @@ import torch
 from torch.utils.data import random_split
 
 # data meta and init
-DataMeta = namedtuple('DataMeta', ['data', 'shape', 'features', 'nunique', 'bag_offsets'])
+DataMeta = namedtuple('DataMeta', ['data', 'shape', 'features', 'nunique'])
 DataInput = namedtuple('DataInput', ['sparse_data', 'dense_data', 'sequence_data'])
 FeatureDict = namedtuple('FeatureDict', ['sparse_features', 'dense_features', 'sequence_features'])
 DataMeta.__new__.__defaults__ = (None, ) * len(DataMeta._fields)
