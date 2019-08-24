@@ -2,6 +2,8 @@
 
 Recommended system(2018-2019)
 
+**参考腾讯开源工具[PyTorch On Angel, arming PyTorch with a powerful Parameter Server, which enable PyTorch to train very big models.](https://github.com/Angel-ML/PyTorch-On-Angel)**
+
 ## Data
 
 (**Fin**)
