@@ -22,9 +22,8 @@ def num_cpus() -> int:
 
 
 # simple name space
-device = torch.device('cuda: 0' if torch.cuda.is_available() else 'cpu')
-_default_cpus = min(16, num_cpus())
-defaults = SimpleNamespace(cpus=_default_cpus, device=device)
+defaults = SimpleNamespace(cpus=min(16, num_cpus()),
+                           device=torch.device('cuda' if torch.cuda.is_available() else 'cpu'))
 
 
 def extract_file(from_path, to_path, remove_finished=False):
@@ -76,3 +75,9 @@ def emb_sz_rule(dim: int) -> int:
 
 def totensor(x):
     return x if isinstance(x, torch.Tensor) else torch.as_tensor(x, device=defaults.device)
+
+
+def dropout_mask(x: torch.Tensor, sz: Collection[int], p: float):
+    "Return a dropout mask of the same type as `x`, size `sz`, with probability `p` to cancel an element."
+
+    return x.new(*sz).bernoulli_(1 - p).div_(1 - p)

@@ -1,9 +1,4 @@
-import os
-
-import torch, gc
-import numpy as np
-
-from .utils import DataInput, DataMeta
+from .utils import DataInput, DataMeta, totensor
 
 
 class RecommendDataset:

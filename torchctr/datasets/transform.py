@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.preprocessing import LabelEncoder, MinMaxScaler, StandardScaler
+from torch.utils.data import DataLoader
 
 from .data import RecommendDataset
 from .utils import DataInput, DataMeta, FeatureDict, defaults
@@ -19,7 +20,7 @@ def sparse_feature_encoding(data: pd.DataFrame, features_names: Union[str, List[
         lbe = LabelEncoder()
         data[feat] = lbe.fit_transform(data[feat])
         nuniques.append(len(lbe.classes_))
-    data_meta = DataMeta(data[features_names].values, data[features_names].shape, features_names, nuniques)
+    data_meta = DataMeta(data[features_names].values, features_names, nuniques)
     return data_meta
 
 
@@ -28,7 +29,7 @@ def sequence_feature_encoding(data: pd.DataFrame, features_names: Union[str, Lis
 
     if not features_names:
         return None
-    data_value, bags_offsets, nuniques = [], [], []
+    data_value, nuniques = [], []
     for feature in features_names:
         vocab = set.union(*[set(str(x).strip().split(sep=sep)) for x in data[feature]])
         vec = CountVectorizer(vocabulary=vocab)
@@ -57,7 +58,7 @@ def dense_feature_scale(data: pd.DataFrame, features_names: Union[str, List[str]
     scaler = scaler_instance if scaler_instance else StandardScaler()
     scaler = scaler.fit(data[features_names])
     data[features_names] = scaler.transform(data[features_names])
-    data_meta = DataMeta(data[features_names].values, data[features_names].shape, features_names)
+    data_meta = DataMeta(data[features_names].values, features_names)
     return data_meta, scaler
 
 
