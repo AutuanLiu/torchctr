@@ -32,8 +32,10 @@ class EmbeddingLayer(nn.Module):
                 emb_szs = [emb_szs_dict[f] for f in x.sequence_data.features]
             else:
                 emb_szs = [self.emb_sz_rule(t) for t in nuniques]
+            # self.sequence_embeds = nn.ModuleList(
+            #     [nn.EmbeddingBag(ni, nf, mode=mode) for ni, nf in zip(nuniques, emb_szs)])
             self.sequence_embeds = nn.ModuleList(
-                [nn.EmbeddingBag(ni, nf, mode=mode) for ni, nf in zip(nuniques, emb_szs)])
+                [nn.Embedding(ni, nf) for ni, nf in zip(nuniques, emb_szs)])
             del nuniques, emb_szs
         self.drop = nn.Dropout(emb_drop)
 

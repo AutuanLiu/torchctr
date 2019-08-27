@@ -5,18 +5,11 @@ import zipfile
 from collections import namedtuple
 from pathlib import Path
 from types import SimpleNamespace
+from functools import lru_cache
 
 import pandas as pd
 import torch
 from torch.utils.data import random_split
-
-# data meta and init
-DataMeta = namedtuple('DataMeta', ['data', 'shape', 'features', 'nunique', 'bag_offsets'])
-DataInput = namedtuple('DataInput', ['sparse_data', 'dense_data', 'sequence_data'])
-FeatureDict = namedtuple('FeatureDict', ['sparse_features', 'dense_features', 'sequence_features'])
-DataMeta.__new__.__defaults__ = (None, ) * len(DataMeta._fields)
-DataInput.__new__.__defaults__ = (None, ) * len(DataInput._fields)
-FeatureDict.__new__.__defaults__ = (None, ) * len(FeatureDict._fields)
 
 
 def num_cpus() -> int:

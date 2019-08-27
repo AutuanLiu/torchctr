@@ -33,16 +33,18 @@ def sequence_feature_encoding(data: pd.DataFrame, features_names: Union[str, Lis
         vocab = set.union(*[set(str(x).strip().split(sep=sep)) for x in data[feature]])
         vec = CountVectorizer(vocabulary=vocab)
         multi_hot = vec.transform(data[feature])
+        # data_value.append(multi_hot)
         nuniques.append(len(vocab))
-        # to index
-        ret, offsets, offset = [], [], 0
-        for row in data[feature]:
-            offsets.append(offset)
-            row = row.split(sep) if isinstance(row, str) else str(row).split(sep)
-            ret.extend(map(lambda word: vec.vocabulary_[word], row))
-            offset += len(row)
-        data_value.append(ret)
-        bags_offsets.append(offsets)
+    data_meta = DataMeta(data_value, None, features_names, nuniques, bags_offsets)
+    to index
+    ret, offsets, offset = [], [], 0
+    for row in data[feature]:
+        offsets.append(offset)
+        row = row.split(sep) if isinstance(row, str) else str(row).split(sep)
+        ret.extend(map(lambda word: vec.vocabulary_[word], row))
+        offset += len(row)
+    data_value.append(ret)
+    bags_offsets.append(offsets)
     data_meta = DataMeta(data_value, None, features_names, nuniques, bags_offsets)
     return data_meta
 
@@ -76,20 +78,8 @@ def make_datasets(data: pd.DataFrame, features_dict=None, sep=',', scaler=None):
         scaler: sacler for dense data.
     """
 
-    sparse = sparse_feature_encoding(data, features_dict.sparse_features)
-    dense, s = dense_feature_scale(data, features_dict.dense_features, scaler_instance=scaler)
-    sequence = sequence_feature_encoding(data, features_dict.sequence_features, sep=sep)
-    print('Making dataset Done!')
-    return DataInput(sparse, dense, sequence), s
+    pass
 
 
 def make_dataloader(input: DataInput, targets=None, batch_size=64, shuffle=False, drop_last=False):
-    dataset = RecommendDataset(input, targets)
-    lens = len(dataset)
-    size = lens // batch_size if drop_last else lens // batch_size + 1
-    shuffled_index = np.random.shuffle(range(lens)) if shuffle else list(range(lens))
-    start, dl = 0, []
-    for _ in range(size):
-        idx = shuffled_index[start:(start + batch_size)]
-        yield dataset[idx]
-        start += batch_size
+    pass
